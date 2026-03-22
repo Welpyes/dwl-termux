@@ -2,7 +2,9 @@
  * See LICENSE file for copyright and license details.
  */
 #include <getopt.h>
+#ifdef WLR_HAS_LIBINPUT_BACKEND
 #include <libinput.h>
+#endif
 #include <linux/input-event-codes.h>
 #include <math.h>
 #include <signal.h>
@@ -13,7 +15,9 @@
 #include <unistd.h>
 #include <wayland-server-core.h>
 #include <wlr/backend.h>
+#ifdef WLR_HAS_LIBINPUT_BACKEND
 #include <wlr/backend/libinput.h>
+#endif
 #include <wlr/render/allocator.h>
 #include <wlr/render/wlr_renderer.h>
 #include <wlr/types/wlr_alpha_modifier_v1.h>
@@ -251,7 +255,9 @@ static void arrangelayer(Monitor *m, struct wl_list *list,
 static void arrangelayers(Monitor *m);
 static void axisnotify(struct wl_listener *listener, void *data);
 static void buttonpress(struct wl_listener *listener, void *data);
+#ifdef WLR_HAS_SESSION
 static void chvt(const Arg *arg);
+#endif
 static void checkidleinhibitor(struct wlr_surface *exclude);
 static void cleanup(void);
 static void cleanupmon(struct wl_listener *listener, void *data);
@@ -649,11 +655,13 @@ buttonpress(struct wl_listener *listener, void *data)
 			event->time_msec, event->button, event->state);
 }
 
+#ifdef WLR_HAS_SESSION
 void
 chvt(const Arg *arg)
 {
 	wlr_session_change_vt(session, arg->ui);
 }
+#endif
 
 void
 checkidleinhibitor(struct wlr_surface *exclude)
@@ -1074,6 +1082,7 @@ createnotify(struct wl_listener *listener, void *data)
 void
 createpointer(struct wlr_pointer *pointer)
 {
+#ifdef WLR_HAS_LIBINPUT_BACKEND
 	struct libinput_device *device;
 	if (wlr_input_device_is_libinput(&pointer->base)
 			&& (device = wlr_libinput_get_device_handle(&pointer->base))) {
@@ -1111,6 +1120,7 @@ createpointer(struct wlr_pointer *pointer)
 			libinput_device_config_accel_set_speed(device, accel_speed);
 		}
 	}
+#endif
 
 	wlr_cursor_attach_input_device(cursor, &pointer->base);
 }
