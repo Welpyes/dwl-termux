@@ -319,21 +319,21 @@ insert_client(Monitor *m, Client *focused_client, Client *new_client)
 
 	if (wider) {
 		/* vertical split => left vs right */
-		if (cursor->x <= mid_x) {
-			focused_node->left  = new_client_node;
-			focused_node->right = old_client_node;
-		} else {
+		if (btrtile_bias_br || cursor->x > mid_x) {
 			focused_node->left  = old_client_node;
 			focused_node->right = new_client_node;
+		} else {
+			focused_node->left  = new_client_node;
+			focused_node->right = old_client_node;
 		}
 	} else {
 		/* horizontal split => top vs bottom */
-		if (cursor->y <= mid_y) {
-			focused_node->left  = new_client_node;
-			focused_node->right = old_client_node;
-		} else {
+		if (btrtile_bias_br || cursor->y > mid_y) {
 			focused_node->left  = old_client_node;
 			focused_node->right = new_client_node;
+		} else {
+			focused_node->left  = new_client_node;
+			focused_node->right = old_client_node;
 		}
 	}
 	old_client_node->split_node = focused_node;

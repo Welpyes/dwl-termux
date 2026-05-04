@@ -17,6 +17,7 @@ static const float fullscreen_bg[]         = {0.1f, 0.1f, 0.1f, 1.0f}; /* You ca
 static const float resize_factor           = 0.0002f; /* Resize multiplier for mouse resizing, depends on mouse sensivity. */
 static const uint32_t resize_interval_ms   = 16; /* Resize interval depends on framerate and screen refresh rate. */
 static const int gappx                     = 0; /* Gaps pixel */
+static const int btrtile_bias_br           = 1; /* 1: spawn new windows at bottom/right, 0: use cursor position */
 
 enum Direction { DIR_LEFT, DIR_RIGHT, DIR_UP, DIR_DOWN };
 
