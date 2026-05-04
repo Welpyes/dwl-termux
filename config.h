@@ -6,6 +6,7 @@
 /* appearance */
 static const int sloppyfocus               = 1;  /* focus follows mouse */
 static const int bypass_surface_visibility = 0;  /* 1 means idle inhibitors will disable idle tracking even if it's surface isn't visible  */
+static const int follow                    = 1;  /* 1 means follow windows when sent to another tag */
 static const unsigned int borderpx         = 1;  /* border pixel of windows */
 static const float rootcolor[]             = COLOR(0x222222ff);
 static const float bordercolor[]           = COLOR(0x444444ff);
@@ -18,6 +19,14 @@ static const uint32_t resize_interval_ms   = 16; /* Resize interval depends on f
 static const int gappx                     = 0; /* Gaps pixel */
 
 enum Direction { DIR_LEFT, DIR_RIGHT, DIR_UP, DIR_DOWN };
+
+enum {
+	VIEW_L = -1,
+	VIEW_R = 1,
+	SHIFT_L = -2,
+	SHIFT_R = 2,
+} RotateTags;
+
 /* tagging - TAGCOUNT must be no greater than 31 */
 #define TAGCOUNT (9)
 
@@ -147,7 +156,11 @@ static const Key keys[] = {
 	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_k,          focusdir,       {.ui = 2} },
 	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_j,          focusdir,       {.ui = 3} },
 	{ MODKEY,                    XKB_KEY_i,          incnmaster,     {.i = +1} },
-	{ MODKEY,                    XKB_KEY_d,          incnmaster,     {.i = -1} },
+	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_i,          incnmaster,     {.i = -1} },
+	{ MODKEY,                    XKB_KEY_a,          rotatetags,     {.i = VIEW_L} },
+	{ MODKEY,                    XKB_KEY_d,          rotatetags,     {.i = VIEW_R} },
+	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_a,          rotatetags,     {.i = SHIFT_L} },
+	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_d,          rotatetags,     {.i = SHIFT_R} },
 	{ MODKEY,                    XKB_KEY_h,          setmfact,       {.f = -0.05f} },
 	{ MODKEY,                    XKB_KEY_l,          setmfact,       {.f = +0.05f} },
 	{ MODKEY,                    XKB_KEY_Return,     zoom,           {0} },
